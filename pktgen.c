@@ -4307,7 +4307,7 @@ static int pktgen_rcv_counter(struct sk_buff *skb, struct net_device *dev,
 	if (unlikely(pgh->pgh_magic != PKTGEN_MAGIC_NET))
 		goto end;
 
-	data_cpu = &__get_cpu_var(pktgen_rx_data);
+	data_cpu = this_cpu_ptr(&pktgen_rx_data);
 	/* Update counter of packets*/
 	data_cpu->rx_packets++;
 	data_cpu->rx_bytes += skb->len + ETH_HLEN;
@@ -4338,7 +4338,7 @@ static int pktgen_rcv_time(struct sk_buff *skb, struct net_device *dev,
 	if (unlikely(pgh->pgh_magic != PKTGEN_MAGIC_NET))
 		goto end;
 
-	data_cpu = &__get_cpu_var(pktgen_rx_data);
+	data_cpu = this_cpu_ptr(&pktgen_rx_data);
 
 	inter_arrival_ktime(now, data_cpu);
 
@@ -4375,7 +4375,7 @@ int pktgen_rcv_basic(struct sk_buff *skb, struct net_device *dev,
 	if (unlikely(pgh->pgh_magic != PKTGEN_MAGIC_NET))
 		goto end;
 
-	data_cpu = &__get_cpu_var(pktgen_rx_data);
+	data_cpu = this_cpu_ptr(&pktgen_rx_data);
 
 	throughput_data(ktime_get(), data_cpu);
 
@@ -4408,7 +4408,7 @@ int pktgen_rcv6_basic(struct sk_buff *skb, struct net_device *dev,
 	if (unlikely(pgh->pgh_magic != PKTGEN_MAGIC_NET))
 		goto end;
 
-	data_cpu = &__get_cpu_var(pktgen_rx_data);
+	data_cpu = this_cpu_ptr(&pktgen_rx_data);
 
 	throughput_data(ktime_get(), data_cpu);
 
